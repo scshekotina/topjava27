@@ -18,15 +18,19 @@
     </tr>
     </thead>
     <tbody>
+    <jsp:useBean id="meals" scope="request" type="java.util.List"/>
     <c:forEach items="${meals}" var="meal">
         <tr style="color:${meal.excess?'RED':'GREEN'}">
             <td><fmt:parseDate value="${meal.dateTime}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both"/>
                 <fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${parsedDateTime}"/></td>
             <td><c:out value="${meal.description}"/></td>
             <td><c:out value="${meal.calories}"/></td>
+            <td><a href="meal?action=edit&id=<c:out value="${meal.id}"/>">Update</a></td>
+            <td><a href="meal?action=delete&id=<c:out value="${meal.id}"/>">Delete</a></td>
         </tr>
     </c:forEach>
     </tbody>
 </table>
+<p><a href="meal?action=insert">Add Meal</a></p>
 </body>
 </html>
