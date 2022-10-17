@@ -35,7 +35,8 @@ public class MealService {
     }
 
     public Collection<Meal> getAllByPeriod(int userId, LocalDate from, LocalDate to) {
-        return repository.getAllByPeriod(userId, from.atStartOfDay(), to.plusDays(1).atStartOfDay());
+        return repository.getAllByPeriod(userId, from != null ? from.atStartOfDay() : null,
+                to != null ? to.plusDays(1).atStartOfDay() : null);
     }
 
 }

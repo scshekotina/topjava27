@@ -3,6 +3,7 @@ package ru.javawebinar.topjava.repository.inmemory;
 import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
+import ru.javawebinar.topjava.util.DateTimeUtil;
 import ru.javawebinar.topjava.util.MealsUtil;
 import ru.javawebinar.topjava.util.ValidationUtil;
 
@@ -58,8 +59,7 @@ public class InMemoryMealRepository implements MealRepository {
     public Collection<Meal> getAllByPeriod(int userId, LocalDateTime from, LocalDateTime to) {
         return repository.values().stream()
                 .filter(meal -> (meal.getUserId() == userId) &&
-                        (from == null || meal.getDateTime().toLocalDate().isAfter(from.toLocalDate().minusDays(1))) &&
-                        (to == null || meal.getDateTime().toLocalDate().isAfter(to.toLocalDate().plusDays(1))))
+                        DateTimeUtil.isBetweenHalfOpen(meal.getDateTime(), from, to))
                 .sorted(Comparator.comparing(Meal::getDateTime))
                 .collect(Collectors.toList());
     }

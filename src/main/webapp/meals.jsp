@@ -2,7 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://topjava.javawebinar.ru/functions" %>
-<%--<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>--%>
 <html>
 <head>
     <title>Meal list</title>
@@ -20,6 +19,14 @@
 <section>
     <h3><a href="index.html">Home</a></h3>
     <hr/>
+    <form method="get" action="meals">
+        <label>От даты (включая):<input type="date" value="${dateFrom}" name="dateFrom"/></label>
+        <label>До даты (включая):<input type="date" value="${dateTo}" name="dateTo"/></label>
+        <label>От времени (включая):<input type="time" value="${timeFrom}" name="timeFrom"/></label>
+        <label>До времени (исключая):<input type="time" value="${timeTo}" name="timeTo"/></label>
+        <input name="action" value="filter" hidden/>
+        <button type="submit">Save</button>
+    </form>
     <h2>Meals</h2>
     <a href="meals?action=create">Add Meal</a>
     <br><br>
