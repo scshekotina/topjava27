@@ -1,7 +1,15 @@
 package ru.javawebinar.topjava.service;
 
+import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExternalResource;
+import org.junit.rules.TestRule;
+import org.junit.rules.TestWatcher;
+import org.junit.runner.Description;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.ContextConfiguration;
@@ -10,9 +18,13 @@ import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
+import ru.javawebinar.topjava.web.user.InMemoryAdminRestControllerTest;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.assertThrows;
 import static ru.javawebinar.topjava.MealTestData.*;
@@ -29,6 +41,41 @@ public class MealServiceTest {
 
     @Autowired
     private MealService service;
+
+    private static final Logger log = LoggerFactory.getLogger(InMemoryAdminRestControllerTest.class);
+
+    private final static Map<String, Long> testsDuration = new HashMap<>();
+
+    @Rule
+    public final TestRule watchman = new TestWatcher() {
+
+        private Date timer;
+
+        @Override
+        protected void starting(Description description) {
+            super.starting(description);
+            timer = new Date();
+        }
+
+        @Override
+        protected void finished(Description description) {
+            super.finished(description);
+            long duration = new Date().getTime() - timer.getTime();
+            log.debug(String.valueOf(duration));
+            testsDuration.put(description.getDisplayName(), duration);
+        }
+    };
+
+    @ClassRule
+    public static final ExternalResource resource = new ExternalResource() {
+        @Override
+        protected void after() {
+            super.after();
+            for (Map.Entry<String, Long> entry : testsDuration.entrySet()) {
+                log.debug(entry.getKey() + " - " + entry.getValue());
+            }
+        }
+    };
 
     @Test
     public void delete() {

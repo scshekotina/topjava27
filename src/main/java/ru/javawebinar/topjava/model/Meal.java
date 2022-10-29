@@ -16,7 +16,7 @@ import java.time.LocalTime;
                 "m.dateTime=:dateTime WHERE m.id=:id AND m.user.id=:userId")
 })
 @Entity
-@Table(name="meals")
+@Table(name = "meals")
 public class Meal extends AbstractBaseEntity {
 
     public static final String DELETE = "Meal.delete";
@@ -25,15 +25,15 @@ public class Meal extends AbstractBaseEntity {
     public static final String GET = "Meal.get";
     public static final String UPDATE = "Meal.update";
 
-    @Column(name="date_time", nullable = false, columnDefinition = "timestamp")
+    @Column(name = "date_time", nullable = false, columnDefinition = "timestamp")
     @NotNull
     private LocalDateTime dateTime;
 
-    @Column(name="description", nullable = false, columnDefinition = "text")
+    @Column(name = "description", nullable = false, columnDefinition = "text")
     @NotBlank
     private String description;
 
-    @Column(name="calories", nullable = false, columnDefinition = "int")
+    @Column(name = "calories", nullable = false, columnDefinition = "int")
     @NotNull
     private int calories;
 
