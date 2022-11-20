@@ -11,6 +11,7 @@ import java.util.List;
 
 import static ru.javawebinar.topjava.util.DateTimeUtil.atStartOfDayOrMin;
 import static ru.javawebinar.topjava.util.DateTimeUtil.atStartOfNextDayOrMax;
+import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFound;
 import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
@@ -47,4 +48,10 @@ public class MealService {
         Assert.notNull(meal, "meal must not be null");
         return repository.save(meal, userId);
     }
+
+    public Meal getWithUser(int id, int userId) {
+        return checkNotFound(repository.getWithUser(id, userId), "not found meal with id" + id +
+                " for user with id " + userId);
+    }
+
 }

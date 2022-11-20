@@ -23,6 +23,9 @@ import java.time.LocalTime;
                     m.dateTime >= :startDateTime AND m.dateTime < :endDateTime 
                     ORDER BY m.dateTime DESC
                 """),
+        @NamedQuery(name = Meal.GET_WITH_USER, query = "SELECT m FROM Meal m LEFT JOIN FETCH m.user AS u " +
+                "LEFT JOIN FETCH u.roles LEFT JOIN FETCH u.meals " +
+                "WHERE m.id=:id AND m.user.id=:userId")
 //        @NamedQuery(name = Meal.UPDATE, query = "UPDATE Meal m SET m.dateTime = :datetime, m.calories= :calories," +
 //                "m.description=:desc where m.id=:id and m.user.id=:userId")
 })
@@ -32,6 +35,7 @@ public class Meal extends AbstractBaseEntity {
     public static final String ALL_SORTED = "Meal.getAll";
     public static final String DELETE = "Meal.delete";
     public static final String GET_BETWEEN = "Meal.getBetween";
+    public static final String GET_WITH_USER = "Meal.getWithUser";
 
     @Column(name = "date_time", nullable = false)
     @NotNull
@@ -63,6 +67,14 @@ public class Meal extends AbstractBaseEntity {
         this.dateTime = dateTime;
         this.description = description;
         this.calories = calories;
+    }
+
+    public Meal(Meal meal) {
+        super(meal.getId());
+        this.dateTime = meal.getDateTime();
+        this.description = meal.getDescription();
+        this.calories = meal.getCalories();
+        this.user = meal.getUser();
     }
 
     public LocalDateTime getDateTime() {
