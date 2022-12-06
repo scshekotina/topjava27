@@ -18,7 +18,7 @@ import java.util.List;
 @RequestMapping(value = MealRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class MealRestController extends AbstractMealController {
 
-    static final String REST_URL = "/rest/meals";
+    public static final String REST_URL = "/rest/meals";
     @Override
     @GetMapping("/{id}")
     public Meal get(@PathVariable int id) {
@@ -49,6 +49,7 @@ public class MealRestController extends AbstractMealController {
 
     @Override
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@RequestBody Meal meal, @PathVariable int id) {
         super.update(meal, id);
     }
