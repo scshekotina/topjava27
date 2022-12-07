@@ -23,10 +23,24 @@
         </mvc:message-converters>
     </mvc:annotation-driven>
 
+    <mvc:annotation-driven conversion-service="conversionService"/>
+
     <context:component-scan base-package="ru.javawebinar.**.web"/>
 
     <!--  all resources inside folder src/main/webapp/resources are mapped so they can be referred to inside JSP files -->
     <mvc:resources mapping="/resources/**" location="/resources/"/>
+
+    <bean id="stringToLocalDateConverter" class="ru.javawebinar.topjava.util.formatConverter.StringToLocalDateConverter"/>
+    <bean id="stringToLocalTimeConverter" class="ru.javawebinar.topjava.util.formatConverter.StringToLocalTimeConverter"/>
+
+    <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+        <property name="converters">
+            <set>
+                <ref bean="stringToLocalDateConverter"/>
+                <ref bean="stringToLocalTimeConverter"/>
+            </set>
+        </property>
+    </bean>
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"
           p:prefix="/WEB-INF/jsp/"
